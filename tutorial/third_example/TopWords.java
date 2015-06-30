@@ -79,12 +79,25 @@ public class TopWords {
     }
 
     public static class TopWordsReduce extends Reducer<NullWritable, TextArrayWritable, Text, IntWritable> {
+        private TreeMap<Integer, Text> countToWordMap = new TreeMap<Integer, Text>();
+
         @Override
         public void reduce(NullWritable key, Iterable<TextArrayWritable> values, Context context) throws IOException, InterruptedException {
             for (TextArrayWritable val: values) {
                 Text[] pair= (Text[]) val.toArray();
                 Text word = pair[0];
-                IntWritable value = new IntWritable(Integer.parseInt(pair[1].toString()));
+                Integer count = Integer.parseInt(pair[1].toString());
+
+                countToWordMap.put(count, word);
+
+                if (countToWordMap.size() > 10) {
+                    countToWordMap.remove(countToWordMap.firstKey());
+                }
+            }
+
+            for (Integer count : countToWordMap.keySet()) {
+                Text word = countToWordMap.get(count);
+                IntWritable value = new IntWritable(count);
                 context.write(word, value);
             }
         }
