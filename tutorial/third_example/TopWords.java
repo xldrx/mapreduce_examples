@@ -179,7 +179,6 @@ class Pair<A extends Comparable<? super A>,
         return 31 * hashcode(first) + hashcode(second);
     }
 
-    // TODO : move this to a helper class.
     private static int hashcode(Object o) {
         return o == null ? 0 : o.hashCode();
     }
@@ -194,7 +193,6 @@ class Pair<A extends Comparable<? super A>,
                 && equal(second, ((Pair<?, ?>) obj).second);
     }
 
-    // TODO : move this to a helper class.
     private boolean equal(Object o1, Object o2) {
         return o1 == o2 || (o1 != null && o1.equals(o2));
     }
