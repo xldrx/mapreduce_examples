@@ -15,5 +15,6 @@ if __name__ == "__main__":
                   .filter(lambda x: x.lower() not in common_words and len(x) > 0) \
                   .map(lambda x: (x, 1)) \
                   .reduceByKey(add)
-
+                  
+    counts.saveAsTextFile(sys.argv[2])
     sc.stop()
